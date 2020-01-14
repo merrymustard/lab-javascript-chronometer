@@ -1,59 +1,50 @@
-/*jshint esversion: 6 */
-
 class Chronometer {
   constructor() {
-    this.currentTime = 0;
-    //this.currentTimeMil = 0;
-
+    this.currentTime = 0
+    this.intervalId = 1000
+    this.myTimer = null
   }
-   startClick(printTime) {
-     this.intervalId = setInterval(() =>{
-       printTime();
-       this.currentTime++;
-       //console.log(this.currentTime);
 
-     }, 1000);
-/*
-     this.intervalId = setInterval(() =>{
-       printTime();
-       this.currentTimeMil++;
-       //console.log(this.currentTime);
+  startClick() {
+    return (this.myTimer = window.setInterval(() => {
+      this.currentTime += 1
+    }, this.intervalId))
+  }
 
-     }, 1);*/
-   } //end  startClick
+  getMinutes() {
+    return Math.floor(this.currentTime / 60)
+  }
+  // IMPORTANT DO NOT TOUCH THE /1 PLEASE
+  getSeconds() {
+    return Math.floor(this.currentTime - this.getMinutes() * 60)
+  }
+  getMs() {
+    return Math.floor(
+      this.currentTime * 1000 -
+        (this.getSeconds() * 1000 + this.getMinutes() * 60000) / 10
+    )
+  }
+  twoDigitsNumber(val) {
+    if (val < 10) {
+      return `0${val}`
+    } else {
+      return `${val}`
+    }
+  }
 
-   getMinutes() {
-     return Math.floor(this.currentTime / 60);
-   }
-   getSeconds() {
-     if (this.currentTime === 0){
-        return 0;
-     } else {
-       return this.currentTime % 60;
-     }
-     //let this.currentTime == 0 ? return 0 :  return this.currentTime % 60 ;
-   }
+  stopClick() {
+    clearInterval(this.myTimer)
+  }
 
-/*
-   getMilSec(){
-     return   this.currentTimeMil;
-   }
-*/
-   twoDigitsNumber(num) {
-     if (num < 10){
-       return `0${num}`;
-     } else {
-       return String(num);
-     }
-   }
-   stopClick() {
-     clearInterval(this.intervalId);
-   }
-   resetClick() {
-     this.currentTime = 0;
-   }
-   splitClick() {
-     return `${this.twoDigitsNumber(this.getMinutes())}:${this.twoDigitsNumber(this.getSeconds())}`;
-    // return this.interval;
-   }
+  resetClick() {
+    window.setInterval(() => {
+      this.currentTime += 0
+    }, this.intervalId)
+  }
+
+  splitClick() {
+    return `${twoDigitsNumber(getMinutes())}:${twoDigitsNumber(
+      getSeconds()
+    )}:${twoDigitsNumber(getMs())}`
+  }
 }
